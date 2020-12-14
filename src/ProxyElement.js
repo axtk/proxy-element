@@ -6,7 +6,7 @@ class ProxyElement {
         }
         else if (element instanceof ProxyElement) {
             this.element = element.element;
-            this.selector = element.selector + ' ' + selector;
+            this.selector = element.selector + ' ' + (selector || '');
         }
         else {
             this.element = element || document;
