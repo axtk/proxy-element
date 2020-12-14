@@ -63,6 +63,9 @@ class ProxyElement {
             }
         }
     }
+    getElement() {
+        return this.element;
+    }
 }
 
 export default ProxyElement;
