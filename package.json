@@ -1,0 +1,11 @@
+{
+  "name": "proxy-element",
+  "version": "1.0.0",
+  "description": "Event delegation via virtual proxy elements",
+  "main": "index.js",
+  "keywords": [
+    "event delegation"
+  ],
+  "author": "axtk",
+  "license": "ISC"
+}
