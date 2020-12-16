@@ -14,26 +14,28 @@ let container = createProxy(containerElement);
 
 // delegating events from any existing and future elements
 // within the container to the container itself:
-
-container.querySelector('h1').addEventListener('click', () => {
+container.querySelector('h1').addEventListener('click', event => {
     // ...
 });
-
-container.querySelectorAll('.list-item').addEventListener('click', () => {
+container.querySelectorAll('.list-item').addEventListener('click', event => {
     // ...
 });
 ```
 
-Replacing a `container` DOM node with its proxy enables [event delegation](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#Event_delegation) with the rest of the code left intact.
+Replacing the `container` DOM node with its proxy enables [event delegation](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#Event_delegation) with the rest of the code left intact.
 
 ```diff
 - let container = containerElement;
 + let container = createProxy(containerElement);
 ```
 
-#### `proxySelector(selector)`, `proxySelectorAll(selector)`
+#### `proxySelector(selector)`
 
-These methods are effectively equivalent to `createProxy(document).querySelector(selector)` and `createProxy(document).querySelectorAll(selector)` respectively.
+A shortcut to `createProxy(document).querySelector(selector)`.
+
+#### `proxySelectorAll(selector)`
+
+A shortcut to `createProxy(document).querySelectorAll(selector)`.
 
 ## Installation
 
