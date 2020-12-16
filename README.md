@@ -4,6 +4,8 @@
 
 ## Usage
 
+#### `createProxy(element)`
+
 ```js
 import {createProxy} from 'proxy-element';
 
@@ -29,7 +31,9 @@ Replacing a `container` DOM node with its proxy enables [event delegation](https
 + let container = createProxy(containerElement);
 ```
 
-The methods `proxySelector(selector)` and `proxySelectorAll(selector)` are effectively equivalent to `createProxy(document).querySelector(selector)` and `createProxy(document).querySelectorAll(selector)` respectively.
+#### `proxySelector(selector)`, `proxySelectorAll(selector)`
+
+These methods are effectively equivalent to `createProxy(document).querySelector(selector)` and `createProxy(document).querySelectorAll(selector)` respectively.
 
 ## Installation
 
