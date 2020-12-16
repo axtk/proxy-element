@@ -29,13 +29,33 @@ Replacing the `container` DOM node with its proxy enables [event delegation](htt
 + let container = createProxy(containerElement);
 ```
 
+#### `proxySelectorAll(selector)`
+
+A shortcut to `createProxy(document).querySelectorAll(selector)`.
+
+```js
+import {proxySelectorAll} from 'proxy-element';
+
+proxySelectorAll('.menu li').addEventListener('click', event => {
+    // ...
+});
+```
+
 #### `proxySelector(selector)`
 
 A shortcut to `createProxy(document).querySelector(selector)`.
 
-#### `proxySelectorAll(selector)`
+#### `proxyElement.getHost()`
 
-A shortcut to `createProxy(document).querySelectorAll(selector)`.
+Returns the host DOM element of the proxy.
+
+```js
+proxySelectorAll('.menu li').getHost() === document;
+```
+
+#### `proxyElement.materialize()`
+
+Returns currently existing DOM nodes (or a single DOM node) represented by the proxy selector.
 
 ## Installation
 
