@@ -1,15 +1,15 @@
 class ProxyElement {
-    constructor(hostElement, selector, all = false) {
-        if (typeof hostElement === 'string') {
-            this.hostElement = document;
-            this.selector = hostElement;
+    constructor(host, selector, all = false) {
+        if (typeof host === 'string') {
+            this.host = document;
+            this.selector = host;
         }
-        else if (hostElement instanceof ProxyElement) {
-            this.hostElement = hostElement.hostElement;
-            this.selector = hostElement.selector + ' ' + (selector || '');
+        else if (host instanceof ProxyElement) {
+            this.host = host.host;
+            this.selector = host.selector + ' ' + (selector || '');
         }
         else {
-            this.hostElement = hostElement || document;
+            this.host = host || document;
             this.selector = selector;
         }
 
@@ -17,18 +17,18 @@ class ProxyElement {
         this.all = all;
         this.listeners = [];
     }
-    querySelector(selector) {
+    proxySelector(selector) {
         return new ProxyElement(this, selector);
     }
-    querySelectorAll(selector) {
+    proxySelectorAll(selector) {
         return new ProxyElement(this, selector, true);
     }
     addEventListener(type, handler, useCapture = false) {
-        let {hostElement, selector, all, listeners} = this;
+        let {host, selector, all, listeners} = this;
 
         let proxyHandler = event => {
             if (!selector)
-                handler.call(hostElement, event);
+                handler.call(host, event);
             else if (all) {
                 for (let t = event.target; t; t = t.parentNode) {
                     if (typeof t.matches === 'function' && t.matches(selector)) {
@@ -38,7 +38,7 @@ class ProxyElement {
                 }
             }
             else {
-                let e = hostElement.querySelector(selector);
+                let e = host.querySelector(selector);
                 for (let t = event.target; e && t; t = t.parentNode) {
                     if (t === e) {
                         handler.call(t, event);
@@ -48,36 +48,36 @@ class ProxyElement {
             }
         };
 
-        hostElement.addEventListener(type, proxyHandler, useCapture);
+        host.addEventListener(type, proxyHandler, useCapture);
         listeners.push({type, handler, useCapture, proxyHandler});
     }
     removeEventListener(type, handler, useCapture = false) {
-        let {hostElement, listeners} = this;
+        let {host, listeners} = this;
 
         for (let i = listeners.length - 1; i >= 0; i--) {
             let L = listeners[i];
 
             if (L.type === type && L.handler === handler && L.useCapture === useCapture) {
-                hostElement.removeEventListener(type, L.proxyHandler, useCapture);
+                host.removeEventListener(type, L.proxyHandler, useCapture);
                 listeners.splice(i, 1);
             }
         }
     }
     getHost() {
-        return this.hostElement;
+        return this.host;
     }
-    materialize() {
-        let {hostElement, selector, all} = this;
+    query() {
+        let {host, selector, all} = this;
 
-        if (!hostElement)
+        if (!host)
             return;
 
         if (!selector)
-            return hostElement;
+            return host;
 
         return all ?
-            hostElement.querySelectorAll(selector) :
-            hostElement.querySelector(selector);
+            host.querySelectorAll(selector) :
+            host.querySelector(selector);
     }
 }
 

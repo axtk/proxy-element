@@ -1,61 +1,52 @@
 # proxy-element
 
-*Event delegation via virtual proxy elements*
+*[Event delegation](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#Event_delegation) via virtual proxy elements*
 
 ## Usage
 
-#### `createProxy(element)`
-
 ```js
-import {createProxy} from 'proxy-element';
+import {proxySelector, proxySelectorAll} from 'proxy-element';
 
-let containerElement = document.querySelector('#container');
-let container = createProxy(containerElement);
+let container = document.querySelector('#container');
 
 // delegating events from any existing and future elements
 // within the container to the container itself:
-container.querySelector('h1').addEventListener('click', event => {
+proxySelector('h2', container).addEventListener('click', event => {
     // ...
 });
-container.querySelectorAll('.list-item').addEventListener('click', event => {
+proxySelectorAll('.list-item', container).addEventListener('click', event => {
     // ...
 });
-```
 
-Replacing the `container` DOM node with its proxy enables [event delegation](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#Event_delegation) with the rest of the code left intact.
-
-```diff
-- let container = containerElement;
-+ let container = createProxy(containerElement);
-```
-
-#### `proxySelectorAll(selector)`
-
-A shortcut to `createProxy(document).querySelectorAll(selector)`.
-
-```js
-import {proxySelectorAll} from 'proxy-element';
-
-proxySelectorAll('.menu li').addEventListener('click', event => {
+// unspecified container === document
+proxySelector('h1').addEventListener('click', event => {
     // ...
 });
 ```
 
-#### `proxySelector(selector)`
+## Exports
 
-A shortcut to `createProxy(document).querySelector(selector)`.
+**`proxySelectorAll(selector, host?)`**<br>
+**`proxySelector(selector, host?)`**
 
-#### `proxyElement.getHost()`
+- **`selector: string`**
+- **`host?: DOMNode | ProxyElement`**
+  - Default: `document`.
+- Both methods return a `ProxyElement`.
 
-Returns the host DOM element of the proxy.
+**`class ProxyElement`**
 
-```js
-proxySelectorAll('.menu li').getHost() === document;
-```
+Represents a virtual context for elements (or a single element) matching a `selector` within a `host` element allowing for event subscription with all events being delegated to the `host` element.
 
-#### `proxyElement.materialize()`
-
-Returns currently existing DOM nodes (or a single DOM node) represented by the proxy selector.
+- **`.addEventListener(type, listener, useCapture)`**
+  - &rarr; [`EventTarget.addEventListener()`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)
+- **`.removeEventListener(type, listener, useCapture)`**
+  - &rarr; [`EventTarget.removeEventListener()`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener)
+- **`.proxySelectorAll(selector)`**
+- **`.proxySelector(selector)`**
+  - Both methods create a proxy with the same `host` element and a nested selector.
+- **`.query()`**
+  - Returns DOM nodes (or a single DOM node) currently matching the proxy selector.
 
 ## Installation
 

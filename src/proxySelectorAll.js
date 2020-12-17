@@ -1,3 +1,3 @@
 import ProxyElement from './ProxyElement';
 
-export default selector => new ProxyElement(null, selector, true);
+export default (selector, host) => new ProxyElement(host, selector, true);
